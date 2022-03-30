@@ -5,6 +5,7 @@ using UnityEngine;
 public interface PianoKeyObserver
 {
     void OnStrikeKey(Piano.Key key);
+    void OnChangeY(Piano.Key key, float offset);
 }
 
 public class PianoKey : MonoBehaviour
@@ -68,6 +69,7 @@ public class PianoKey : MonoBehaviour
                 
                 pos.y -= downSpeed * Time.deltaTime;
                 transform.position = pos; // 少し下げる
+                observer.OnChangeY(key!, maxY - pos.y);
 
                 if (pos.y < strikeY)
                 {
@@ -94,6 +96,7 @@ public class PianoKey : MonoBehaviour
                 
                 pos.y += downSpeed * Time.deltaTime;
                 transform.position = pos; // 少し上げて元に戻す
+                observer.OnChangeY(key!, maxY - pos.y);
 
                 if (pos.y > chargeY)
                 {

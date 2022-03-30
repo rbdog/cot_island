@@ -7,6 +7,7 @@ public class Quest001 : MonoBehaviour, PianoObserver
 {
     AudioSource src;
     public Piano piano;
+    public GameObject[] blocks;
 
     List<Piano.Key> historyKeys = new List<Piano.Key>();
     List<Piano.Key> answers = new List<Piano.Key>() {
@@ -52,6 +53,8 @@ public class Quest001 : MonoBehaviour, PianoObserver
         var c = Resources.Load<AudioClip>("sound_effect/solve");
         this.src.clip = c;
         src.Play();
+
+        StartCoroutine(ShowBlocks());
     }
 
     // クエスト失敗
@@ -60,6 +63,23 @@ public class Quest001 : MonoBehaviour, PianoObserver
         Debug.Log("クエストに失敗しました");
         // 履歴を全て削除
         this.historyKeys.RemoveAll((e) => true);
+    }
+
+    // ブロック出現
+    IEnumerator ShowBlocks()
+    {
+        for (float i = 0; i < 1; i += 0.1f)
+        {
+            for (int bi = 0; bi < blocks.Length; bi += 1)
+            {
+                var x = blocks[bi].transform.localScale.x;
+                var y = i;
+                var z = blocks[bi].transform.localScale.z;
+                blocks[bi].transform.localScale = new Vector3(x, y, z);
+            }
+            yield return new WaitForSeconds(0.1f);
+        }
+        yield break;
     }
 
     // Start is called before the first frame update
